@@ -1,5 +1,7 @@
-os.loadAPI("logger")
-os.loadAPI("point_api")
+local dir = shell.dir()
+os.loadAPI(dir.."/api/logger")
+os.loadAPI(dir.."/api/point")
+
 
 --[[
     Computer Craft Arcade points loader
@@ -24,7 +26,7 @@ local mon = peripheral.wrap(config.monitor_name)
 
 function clear_mon(mon) 
     mon.setBackgroundColor(colors.black)
-    mon.setTextScale(.75)
+    mon.setTextScale(1)
     mon.setCursorPos(1, 1)
     mon.clear()
 end 
