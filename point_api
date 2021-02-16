@@ -1,0 +1,86 @@
+local function debug(str)
+    print("[DEBUG] "..str)
+end
+
+local function disk_interactions(mount_path)
+    local function get_path(sub_path) 
+        return mount_path.."/"..sub_path
+    end
+    
+    local function write(sub_path, i)
+        local path = get_path(sub_path)
+        local handle = fs.open(path, 'w')
+        handle.write(""..i)
+        handle.close()
+    end
+    
+    local function read(sub_path)
+        local path = get_path(sub_path)
+        local ret = 0
+        if fs.exists(path) then
+            local handle = fs.open(path, 'r')
+            local content = handle.readAll()
+            ret = tonumber(content)
+            handle.close()
+        else
+            debug("Path "..path.." does not exist, creating")
+            write(sub_path, 0)
+        end
+        return ret
+    end
+    
+    
+    return {
+        read=read,
+        write=write,
+    }
+end
+
+local function initialize_disk(interactions, point_types)
+    
+    for i, type in ipairs(point_types) do
+        debug(type..": "..interactions.read(type))
+    end
+end
+
+function wait_for_disk(disk_side, point_types)
+    debug("Waiting for disk")
+    
+    while true do 
+        local event, side = os.pullEvent()
+        if event == "disk" then
+            debug("Disk inserted in side "..side)
+            if side == disk_side then
+                debug("Found required disk!")
+                break
+            end
+        end 
+    end
+    
+    -- wrap peripheral and initialize
+    local drive = peripheral.wrap(disk_side)
+    local mount_path = drive.getMountPath()
+    local interactions = disk_interactions(mount_path)
+    initialize_disk(interactions, point_types)
+    
+    -- formulate return value
+    local function read(type)
+        return interactions.read(type)
+    end
+    
+    local function add(type, i)
+        interactions.write(type, interactions.read(type) + i)
+    end
+    
+    local function set(type, i)
+        interactions.write(type, i)
+    end
+    
+    return {
+        read=read,
+        add=add,
+        set=set,
+    }
+end
+
+
