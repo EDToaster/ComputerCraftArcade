@@ -1,6 +1,4 @@
-local function debug(str)
-    print("[DEBUG] "..str)
-end
+os.loadAPI("logger")
 
 local function disk_interactions(mount_path)
     local function get_path(sub_path) 
