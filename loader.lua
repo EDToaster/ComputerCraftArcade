@@ -11,7 +11,7 @@ os.loadAPI("point_api")
 
 local config = {
     drive_name="drive_0",
-    monitor_name="monitor_0",
+    monitor_name="monitor_1",
     host_storage="refinedstorage:interface_1",
     user_storage="minecraft:barrel_2",
 }
