@@ -80,7 +80,7 @@ local function state_ask_operation()
         -- check for x position to get which button was pressed
         if x < 10 then
             return 3
-        else if x < 20 then
+        elseif x < 20 then
             return 4
         else 
             return 5
