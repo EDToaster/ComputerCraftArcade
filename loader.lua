@@ -131,7 +131,7 @@ local function state_deposit()
         finished = not pulled_items
     end
 
-    return 2
+    return 3
 end
 
 local function state_withdraw()
@@ -150,7 +150,7 @@ local function state_withdraw()
         end
     end
     
-    return 2
+    return 3
 end
 
 local state_functions = { state_insert_card, state_ask_operation, state_balance, state_deposit, state_withdraw }
