@@ -26,6 +26,7 @@ local mon = peripheral.wrap(config.monitor_name)
 function clear_mon(mon) 
     mon.setBackgroundColor(colors.black)
     mon.setTextScale(1)
+    mon.setTextColor(colors.white)
     mon.setCursorPos(1, 1)
     mon.clear()
 end 
@@ -102,7 +103,7 @@ local function state_balance()
         y = y + 1
     end
 
-    mon.setTextColor(colors.black)
+    mon.setTextColor(colors.white)
     mon.setCursorPos(1, y)
     mon.write("Please withdraw your card")
     os.pullEvent("disk_eject")
