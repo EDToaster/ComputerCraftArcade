@@ -139,7 +139,30 @@ local function state_deposit()
     return 1
 end
 
-local state_functions = { state_insert_card, state_ask_operation, state_balance, state_deposit }
+local function state_withdraw()
+    clear_mon(mon)
+    mon.write("Withdrawing ...")
+
+    for i, item in ipairs(point_types) do
+        local num_to_pull = d.read(item)
+        while num_to_pull > 0 do
+            local items_pulled = 
+                host_storage.pushItems(
+                    config.user_storage,
+                    i+9, num_to_pull)
+            d.add(item, -items_pulled)
+            num_to_pull = d.read(item)
+        end
+    end
+    clear_mon(mon)
+    mon.write("Finished Withdrawing")
+    mon.setCursorPos(1, 2)
+    mon.write("Please withdraw your card")
+    os.pullEvent("disk_eject")
+    return 1
+end
+
+local state_functions = { state_insert_card, state_ask_operation, state_balance, state_deposit, state_withdraw }
 
 --[[
     State Machine
@@ -155,49 +178,8 @@ local state_functions = { state_insert_card, state_ask_operation, state_balance,
 local state = 1
 
 function loop()
-
     local state_function = state_functions[state]
     state = state_function()
-
-
-    
-    -- -- ask deposit or withdraw
-    -- -- wait for click
-    -- local do_deposit = y <= 5
-    -- -- deposit
-    -- if do_deposit then
-    --     for i, item in pairs(user_storage.list()) do
-    --         for j, type in ipairs(point_types) do
-    --             if type == item.name then
-    --                 user_storage.pushItems(config.host_storage, i)
-    --                 d.add(type, item.count)
-    --                 break
-    --             end
-    --         end
-    --     end
-    --     clear_mon(mon)
-    --     mon.write("Balance: ")
-    --     mon.setCursorPos(1, 2)
-    --     mon.write(""..d.read("minecraft:diamond"))
-    -- else
-    --     for i, item in ipairs(point_types) do
-    --         local num_to_pull = d.read(item)
-    --         while num_to_pull > 0 do
-    --             local items_pulled = 
-    --                 host_storage.pushItems(
-    --                     config.user_storage,
-    --                     i+9, num_to_pull)
-    --             d.add(item, -items_pulled)
-    --             print("Pulled "..items_pulled.." items")
-    --             num_to_pull = d.read(item)
-    --         end
-    --     end
-    --     clear_mon(mon)
-    --     mon.write("Finished!")
-    -- end
-    -- -- wait for disk_empty event
-    -- os.pullEvent("disk_eject")
-    
 end
 
 
