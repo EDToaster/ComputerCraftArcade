@@ -1,5 +1,4 @@
 local dir = shell.dir()
-os.loadAPI(dir.."/api/logger")
 os.loadAPI(dir.."/api/point")
 
 
