@@ -120,8 +120,8 @@ local function state_deposit()
         for i, item in pairs(user_storage.list()) do
             for j, type in ipairs(point_types) do
                 if type == item.name then
-                    user_storage.pushItems(config.host_storage, i)
-                    d.add(type, item.count)
+                    local items_pushed = user_storage.pushItems(config.host_storage, i)
+                    d.add(type, items_pushed)
                     pulled_items = true
                     break
                 end
