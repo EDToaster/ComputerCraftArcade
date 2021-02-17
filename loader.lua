@@ -39,7 +39,7 @@ local function state_insert_card()
     mon.setCursorPos(1, 2)
     mon.write("an arcade card")
 
-    d = point_api.wait_for_disk(config.drive_name, point_types)
+    d = point.wait_for_disk(config.drive_name, point_types)
     return 2
 end
 
@@ -77,13 +77,36 @@ local function state_ask_operation()
     local event, button, x, y = os.pullEvent()
 
     if event == "monitor_touch" then
-        return 1
+        -- check for x position to get which button was pressed
+        if x < 10 then
+            return 3
+        else if x < 20 then
+            return 4
+        else 
+            return 5
+        end
     elseif event == "disk_eject" then
         return 1
     end
 end
 
-local state_functions = { state_insert_card, state_ask_operation }
+local function state_balance()
+    clear_mon(mon)
+    mon.write("Balance: ")
+    mon.setCursorPos(1, 2)
+
+    local y = 2
+    for i, type in ipairs(point_types) do
+        mon.write(type..": "..d.read(type))
+        y = y + 1
+    end
+
+    mon.write("Please withdraw your card")
+    os.pullEvent("disk_eject")
+    return 1
+end
+
+local state_functions = { state_insert_card, state_ask_operation, state_balance }
 
 --[[
     State Machine
