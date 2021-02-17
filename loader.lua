@@ -110,7 +110,36 @@ local function state_balance()
     return 1
 end
 
-local state_functions = { state_insert_card, state_ask_operation, state_balance }
+local function state_deposit()
+    clear_mon(mon)
+    mon.write("Depositing ...")
+
+    local finished = false
+    while not finished do
+        local pulled_items = false
+        for i, item in pairs(user_storage.list()) do
+            for j, type in ipairs(point_types) do
+                if type == item.name then
+                    user_storage.pushItems(config.host_storage, i)
+                    d.add(type, item.count)
+                    pulled_items = true
+                    break
+                end
+            end
+        end
+
+        finished = not pulled_items
+    end
+
+    clear_mon(mon)
+    mon.write("Finished Depositing")
+    mon.setCursorPos(1, 2)
+    mon.write("Please withdraw your card")
+    os.pullEvent("disk_eject")
+    return 1
+end
+
+local state_functions = { state_insert_card, state_ask_operation, state_balance, state_deposit }
 
 --[[
     State Machine
