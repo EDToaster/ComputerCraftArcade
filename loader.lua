@@ -131,12 +131,7 @@ local function state_deposit()
         finished = not pulled_items
     end
 
-    clear_mon(mon)
-    mon.write("Finished Depositing")
-    mon.setCursorPos(1, 2)
-    mon.write("Please withdraw your card")
-    os.pullEvent("disk_eject")
-    return 1
+    return 2
 end
 
 local function state_withdraw()
@@ -154,12 +149,8 @@ local function state_withdraw()
             num_to_pull = d.read(item)
         end
     end
-    clear_mon(mon)
-    mon.write("Finished Withdrawing")
-    mon.setCursorPos(1, 2)
-    mon.write("Please withdraw your card")
-    os.pullEvent("disk_eject")
-    return 1
+    
+    return 2
 end
 
 local state_functions = { state_insert_card, state_ask_operation, state_balance, state_deposit, state_withdraw }
