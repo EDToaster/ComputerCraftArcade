@@ -93,14 +93,15 @@ end
 local function state_balance()
     clear_mon(mon)
     mon.write("Balance: ")
-    mon.setCursorPos(1, 2)
 
     local y = 2
     for i, type in ipairs(point_types) do
+        mon.setCursorPos(1, y)
         mon.write(type..": "..d.read(type))
         y = y + 1
     end
 
+    mon.setCursorPos(1, y)
     mon.write("Please withdraw your card")
     os.pullEvent("disk_eject")
     return 1
