@@ -74,10 +74,10 @@ local function state_ask_operation()
     mon.setCursorPos(21, 3)
     mon.write("Withdraw")
 
-    local event, button, x, y = os.pullEvent("monitor_touch")
+    local event, button, x, y = os.pullEvent()
 
     if event == "monitor_touch" then
-        return 2
+        return 1
     elseif event == "disk_eject" then
         return 1
     end
@@ -96,7 +96,7 @@ local state_functions = { state_insert_card, state_ask_operation }
 --]]
 
 -- initial state is 1
-local state = 2
+local state = 1
 
 function loop()
 
