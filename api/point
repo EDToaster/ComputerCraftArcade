@@ -1,5 +1,7 @@
-local dir = shell.dir()
-os.loadAPI(dir.."/api/logger")
+
+local function debug(str)
+    print("[DEBUG] "..str)
+end
 
 local function disk_interactions(mount_path)
     local function get_path(sub_path) 
