@@ -102,7 +102,7 @@ local function state_balance()
         y = y + 1
     end
 
-    mon.setTextColor(colors.lightBlue)
+    mon.setTextColor(colors.black)
     mon.setCursorPos(1, y)
     mon.write("Please withdraw your card")
     os.pullEvent("disk_eject")
